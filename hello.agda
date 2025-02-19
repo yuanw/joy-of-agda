@@ -1,5 +1,3 @@
-data Greeting : Set where
-  hello : Greeting
+const : (A B : Set) -> A -> B -> A
+const A B a  =  \ _ -> a 
 
-greet : Greeting
-greet = hello
