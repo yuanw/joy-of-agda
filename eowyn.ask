@@ -1,0 +1,82 @@
+id :: a -> a
+defined id a = a
+
+compose :: (a -> b) -> (b -> c) -> (a -> c)
+defined compose f g a = g (f a)
+
+proven p -> p by ImpI
+
+
+
+{- I can't find a rule called Impl that would prove p -> q
+prove p -> q by Impl where
+  given p prove q ?
+-}
+
+proven (p -> q) -> (q -> r) -> (p -> r) by ImpI where
+ given p -> q proven (q -> r) -> p -> r by ImpI where
+   given q -> r proven p -> r by ImpI where
+     given p proven r from q -> r where
+       proven q from p -> q
+
+data Both a b = Pair a b
+
+assocBoth :: Both (Both a b) c -> Both a (Both b c)
+defined assocBoth x from x where
+  defined assocBoth (Pair ab c) from ab where
+    defined assocBoth (Pair (Pair a b) c) = Pair a (Pair b c)
+
+
+
+assocBoth' :: Both a (Both b c) -> Both (Both a b) c
+defined assocBoth' x from x where
+  defined assocBoth' (Pair a bc) from bc where
+    defined assocBoth' (Pair a (Pair b c)) = Pair (Pair a b) c
+-- introduction
+{-
+prove p & q by AndI where
+  prove p ?
+  prove q ?
+-} 
+--https://www.youtube.com/watch?v=m_wNkw5mtgM
+data Either a b = Left a | Right b
+
+assocEither :: Either (Either a b) c -> Either a (Either b c)
+defined assocEither x from x where
+  defined assocEither (Left ab) from ab where
+    defined assocEither (Left (Left a)) = Left a
+    defined assocEither (Left (Right b)) = Right (Left b)
+  defined assocEither (Right c) = Right (Right c)
+ 
+proven (p & q) & r -> p & (q & r) by ImpI where
+  given (p & q) & r proven p & q & r from (p & q) & r where
+    given p & q, r proven p & q & r from p & q where
+      given p, q proven p & q & r by AndI where
+        proven q & r by AndI
+
+proven (p | q) | r -> p | (q | r) by ImpI where
+  given (p | q) | r proven p | (q | r) from (p | q) | r where
+    given p | q proven p | q | r from p | q where
+      given p proven p | q | r by OrIL
+      given q proven p | q | r by OrIR where
+        proven q | r by OrIL
+
+    given r proven p | q | r by OrIR where
+      proven q | r by OrIR
+
+
+distribute :: Both a (Either b c) -> Either (Both a b) (Both a c)
+defined distribute x from x where
+  defined distribute (Pair a bc) from bc where
+    defined distribute (Pair a (Left b)) = Left (Pair a b) 
+    defined distribute (Pair a (Right c)) = Right (Pair a c)
+
+
+proven (p & (q | r)) -> (p & q) | (p & r) by ImpI where
+  given p & (q | r) proven p & q | p & r from p & (q| r) where
+    given p, q | r proven p & q | p & r from (q | r) where
+      given q proven p & q | p & r by OrIL where
+        proven p & q by AndI
+      given r proven p & q | p & r by OrIR where
+        proven p & r by AndI
+
