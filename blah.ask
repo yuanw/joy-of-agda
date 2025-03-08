@@ -17,6 +17,10 @@ prove Not (Not p) -> p by ImpI where
         prove Not p
 --}
 
+proven Not (Not p) -> p by ImpI where
+  given Not (Not p) proven p by Contradiction where
+    given Not p proven False from Not (Not p)
+
 data Zero =
 data Either a b = Left a | Right b
 
@@ -36,4 +40,45 @@ weKnow :: Either b (b -> Zero)
 define weKnow x from x where
 -}
 
-prove b | Not b ?
+{- don't ask
+prove b | Not b by
+-}
+-- dist
+
+proven b | Not b by Contradiction where
+  given Not (b | Not b) proven False from Not (b | Not b) where
+    proven b | Not b by OrIR where
+      proven Not b by NotI where
+        given b proven False from Not (b | Not b) where
+          proven b | Not b by OrIL
+
+-- implication becomes boolean
+proven (Not a | b) -> (a -> b) by ImpI where
+  given Not a | b proven a -> b by ImpI where
+    given a proven b from Not a | b where
+      given Not a proven b from Not a
+
+proven (a -> b) ->  ((Not a) | b) by ImpI where
+  given a -> b proven Not a | b from a | Not a where
+    given a proven Not a | b by OrIR where
+      proven b from a -> b
+    given Not a proven Not a | b by OrIL
+
+-- contradiction is extra magic
+-- bits and propration
+
+
+proven (p -> q) | (q -> p) from q | Not q where
+  given q proven (p -> q) | (q -> p) from p | Not p where
+    given p proven (p -> q) | (q -> p) by OrIL where
+      proven p -> q by ImpI
+    given Not p proven (p -> q) | (q -> p) by OrIL where
+      proven p -> q by ImpI
+  given Not q proven (p -> q) | (q -> p) from p | Not p where
+    given p proven (p -> q) | (q -> p) by OrIR where
+      proven q -> p by ImpI
+    given Not p proven (p -> q) | (q -> p)  by OrIL where
+      proven p -> q by ImpI where
+        given p proven q from Not p
+
+
