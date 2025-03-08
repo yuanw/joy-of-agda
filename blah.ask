@@ -1,0 +1,39 @@
+proven p -> Not (Not p) by ImpI where
+  given p proven Not (Not p) by NotI where
+    given Not p proven False from Not p
+
+
+-- no canonical way to prove false
+
+-- Not p is way to say i rather prove e
+-- p -> Not (Not p) doudle negatition introduction
+-- Not (Not p) -> double negatiton elimantio
+
+{--
+prove Not (Not p) -> p by ImpI where
+  given Not (Not p) prove p from Not (Not p) where
+    prove Not p by NotI where
+      given p prove False from Not (Not p) where
+        prove Not p
+--}
+
+data Zero =
+data Either a b = Left a | Right b
+
+data One = It
+data Both a b = Pair a b
+
+notBoth :: Both a (a -> Zero) -> Zero
+defined notBoth x from x where
+  defined notBoth (Pair x y) = y x
+
+proven Not (p & Not p) by NotI where
+  given p & Not p proven False from p & Not p where
+    given p, Not p proven False from Not p
+
+{- don't ask
+weKnow :: Either b (b -> Zero)
+define weKnow x from x where
+-}
+
+prove b | Not b ?
