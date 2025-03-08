@@ -1,0 +1,30 @@
+-- question: prove (a & b) & (a -> b -> False) -> False
+proven (a & b) & (a -> b -> False) -> False by ImpI where
+  given (a & b) & (a -> b -> False) proven False from (a & b) & (a -> b -> False) where
+    given a & b, a -> b -> False proven False from (a -> b -> False ) where
+      proven a from (a & b)
+      given b -> False proven False from (a & b) where
+        given a, b proven False from (b -> False)
+
+
+--prove (a | b) & ((a -> False) & (b -> False)) -> False
+proven (a | b) & ((a -> False) & (b -> False)) -> False by ImpI where
+  given (a | b) & (a -> False) & (b -> False) proven False from (a | b) & (a -> False) & (b -> False) where
+    given a | b, (a -> False) & (b -> False) proven False from (a -> False) & (b -> False) where
+      given a -> False, b -> False proven False from (a | b) where
+        given a proven False from a -> False
+        given b proven False from b -> False
+
+
+
+
+
+
+
+
+
+
+
+
+
+
