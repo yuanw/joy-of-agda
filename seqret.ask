@@ -20,7 +20,10 @@ prove Not (a & b) & ((Not a -> False ) & (Not b -> False)) -> False by ImpI wher
   given Not (a & b) & (Not a -> False) & (Not b -> False) prove False from Not (a & b) & (Not a -> False) & (Not b -> False) where
     given Not (a & b), (Not a -> False) & (Not b -> False) prove False from  (Not a -> False) & (Not b -> False) where
       given Not a -> False, Not b -> False prove False from (Not a | Not b) where
-        prove Not a | Not b from No
+        prove Not a | Not b from Not (a & b) where
+          prove a & b by AndI where
+            prove a ?
+            prove b ?
         given Not a proven False from Not a -> False
         given Not b proven False from Not b -> False
 
@@ -36,7 +39,7 @@ prove Not (a & b) & ((Not a -> False ) & (Not b -> False)) -> False by ImpI wher
 
 
 
-
+x
 
 
 
