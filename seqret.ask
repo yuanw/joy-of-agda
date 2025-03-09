@@ -15,10 +15,23 @@ proven (a | b) & ((a -> False) & (b -> False)) -> False by ImpI where
         given a proven False from a -> False
         given b proven False from b -> False
 
---prove Not (a | b) & ((Not a -> False ) & (Not b -> False)) -> False
-prove Not (a | b) & ((Not a -> False ) & (Not b -> False)) -> False by ImpI where
-  given Not (a | b) & (Not a -> False) & (Not b -> False) prove False from Not (a | b) & (Not a -> False) & (Not b -> False) where
-    given Not (a | b), (Not a -> False) & (Not b -> False) prove False for
+--prove Not (a & b) & ((Not a -> False ) & (Not b -> False)) -> False
+prove Not (a & b) & ((Not a -> False ) & (Not b -> False)) -> False by ImpI where
+  given Not (a & b) & (Not a -> False) & (Not b -> False) prove False from Not (a & b) & (Not a -> False) & (Not b -> False) where
+    given Not (a & b), (Not a -> False) & (Not b -> False) prove False from  (Not a -> False) & (Not b -> False) where
+      given Not a -> False, Not b -> False prove False from (Not a | Not b) where
+        prove Not a | Not b from No
+        given Not a proven False from Not a -> False
+        given Not b proven False from Not b -> False
+
+
+
+
+
+
+
+
+
 
 
 
