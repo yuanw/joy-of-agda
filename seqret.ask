@@ -15,6 +15,12 @@ proven (a | b) & ((a -> False) & (b -> False)) -> False by ImpI where
         given a proven False from a -> False
         given b proven False from b -> False
 
+--prove Not (a | b) & ((Not a -> False ) & (Not b -> False)) -> False
+prove Not (a | b) & ((Not a -> False ) & (Not b -> False)) -> False by ImpI where
+  given Not (a | b) & (Not a -> False) & (Not b -> False) prove False from Not (a | b) & (Not a -> False) & (Not b -> False) where
+    given Not (a | b), (Not a -> False) & (Not b -> False) prove False for
+
+
 
 
 
