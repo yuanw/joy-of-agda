@@ -81,4 +81,21 @@ proven (p -> q) | (q -> p) from q | Not q where
       proven p -> q by ImpI where
         given p proven q from Not p
 
+-- lecture 3
+-- de Morgan's Laws
 
+proven Not (a | b) = (Not a & Not b) by Equivalence where
+  given Not (a | b) proven Not a & Not b by AndI where
+    proven Not a by NotI where
+      given a proven False from Not (a | b) where
+        proven a | b by OrIL
+    proven Not b by NotI where
+      given b proven False from Not (a | b) where
+        proven a | b by OrIR
+  given Not a & Not b proven Not (a | b) from Not a & Not b where
+    given Not a, Not b proven Not (a | b) by NotI where
+      given a | b proven False from a | b where
+        given a proven False from Not a
+        given b proven False from Not b
+
+prove Not (a & b) = (Not a | Not b) ?
